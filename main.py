@@ -3,9 +3,36 @@ from PIL import ImageGrab
 import numpy as np
 import time
 import pyautogui
+import configparser
+
 
 # 图片文件路径
-image_files = ['image1.jpg', 'image2.jpg', 'image3.jpg']
+def select_image_files(section_number):
+    # 读取配置文件
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
+    # 构建部分名称
+    section_name = f'IMAGES_{section_number}'
+
+    # 检查部分是否存在
+    if section_name not in config:
+        print(f"部分 {section_name} 不存在于配置文件中")
+        return None
+
+    # 获取部分中的图像文件路径
+    image_files_list = []
+    for i in range(1, 4):
+        image_key = f'image{i}'
+        if image_key in config[section_name]:
+            image_files_list.append(config[section_name][image_key])
+
+    return image_files_list
+
+
+section_number = int(input("请选择要刷的关卡（1,铁安局  2,形态污染  3,红茶战争（关卡2） 4,红茶战争（关卡3））："))
+image_files = select_image_files(section_number)
+print(image_files)
 
 # 设置阈值
 threshold = 0.8  # 可以根据需要调整阈值
@@ -104,3 +131,4 @@ while True:
     time.sleep(1)
 
 print("循环结束。")
+
