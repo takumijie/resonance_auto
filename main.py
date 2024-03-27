@@ -4,21 +4,25 @@ import numpy as np
 import time
 import pyautogui
 import configparser
+import sys
+import os
 
+print("欢迎使用雷索纳斯_auto Ciallo～(∠·ω< )⌒☆ -!")
+# 获取脚本运行路径
+script_path = os.path.abspath(__file__)
+BASE_DIR = os.path.dirname(script_path)
 
-# 图片文件路径
 def select_image_files(section_number):
     # 读取配置文件
     config = configparser.ConfigParser()
-    config.read('config.ini')
-
+    config.read(os.path.join(BASE_DIR, 'config.ini'))
     # 构建部分名称
     section_name = f'IMAGES_{section_number}'
 
     # 检查部分是否存在
     if section_name not in config:
         print(f"部分 {section_name} 不存在于配置文件中")
-        return None
+        return "检查脚本运行"
 
     # 获取部分中的图像文件路径
     image_files_list = []
@@ -131,4 +135,3 @@ while True:
     time.sleep(1)
 
 print("循环结束。")
-
