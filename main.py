@@ -7,15 +7,19 @@ import configparser
 import sys
 import os
 
-print("欢迎使用雷索纳斯_auto Ciallo～(∠·ω< )⌒☆ -!")
 # 获取脚本运行路径
-script_path = os.path.abspath(__file__)
-BASE_DIR = os.path.dirname(script_path)
+BASE_DIR = os.path.dirname(os.path.realpath(sys.argv[0]))
+print(BASE_DIR)
+
+# 读取配置文件
+config_file = os.path.join(BASE_DIR, 'config.ini')
+config = configparser.ConfigParser()
+config.read(config_file)
+
+print("欢迎使用雷索纳斯_auto\tCiallo～(∠·ω< )⌒☆ -!\n\n使用ctrl+c结束程序\n")
+
 
 def select_image_files(section_number):
-    # 读取配置文件
-    config = configparser.ConfigParser()
-    config.read(os.path.join(BASE_DIR, 'config.ini'))
     # 构建部分名称
     section_name = f'IMAGES_{section_number}'
 
@@ -34,12 +38,12 @@ def select_image_files(section_number):
     return image_files_list
 
 
-section_number = int(input("请选择要刷的关卡（1,铁安局  2,形态污染  3,红茶战争（关卡2） 4,红茶战争（关卡3））："))
+section_number = int(input("请选择要刷的关卡（1,铁安局  2,形态污染  3,红茶战争（关卡2） 4,红茶战争（关卡3））：\n"))
 image_files = select_image_files(section_number)
 print(image_files)
 
-# 设置阈值
-threshold = 0.8  # 可以根据需要调整阈值
+# 设置阈值(配置文件中可调节)
+threshold = config.getfloat('Image_matching_threshold', 'Image_matching_threshold')
 
 
 def find_current_step():
